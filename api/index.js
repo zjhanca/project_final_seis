@@ -3,14 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-// --- RUTAS CORREGIDAS ---
-const authorRoutes = require('./controllers/authorController');
-const userRoutes = require('./controllers/userController');
-const libroRoutes = require('./controllers/libroController');
-const prestamoRoutes = require('./controllers/prestamoController');
-const authRoutes = require('./controllers/authController');
-const devolucionesRoutes = require('./controllers/devolucionesController');
-const configuracionRoutes = require('./controllers/configuracionController');
+const authorRoutes = require('./routes/authors');
+const userRoutes = require('./routes/users');
+const libroRoutes = require('./routes/libros');
+const prestamoRoutes = require('./routes/prestamos');
+const authRoutes = require('./routes/authRoutes');
+const devolucionesRoutes = require('./routes/devoluciones');
+const configuracionRoutes = require('./routes/configuracionRoutes');
 
 const app = express();
 
@@ -27,14 +26,14 @@ app.use((req, res, next) => {
 // Activar el modo de depuración de Mongoose
 mongoose.set('debug', true);
 
-// --- USO DE RUTAS (SIN CAMBIOS) ---
+// Rutas
 app.use('/api/authors', authorRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/libros', libroRoutes);
 app.use('/api/prestamos', prestamoRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/devoluciones', devolucionesRoutes);
-app.use('/api/configuracion', configuracionRoutes);
+app.use('/api/configuracion', require('./routes/configuracionRoutes'));
 
 
 // Ruta de prueba
@@ -57,6 +56,39 @@ app.use((req, res, next) => {
     message: 'Ruta no encontrada',
     path: req.originalUrl,
     method: req.method,
+    availableRoutes: [
+      'GET /api/authors',
+      'GET /api/authors/:id', 
+      'POST /api/authors',
+      'PUT /api/authors/:id',
+      'DELETE /api/authors/:id',
+      'GET /api/users',
+      'GET /api/users/:id',
+      'POST /api/users',
+      'PUT /api/users/:id', 
+      'DELETE /api/users/:id',
+      'GET /api/libros',
+      'GET /api/libros/:id',
+      'POST /api/libros',
+      'PUT /api/libros/:id',
+      'DELETE /api/libros/:id',
+      'GET /api/prestamos',
+      'GET /api/prestamos/:id',
+      'POST /api/prestamos',
+      'PUT /api/prestamos/:id',
+      'DELETE /api/prestamos/:id',
+      'POST /api/auth/register',
+      'POST /api/auth/login',
+      'GET /api/auth',
+      'GET /api/test',
+      'GET /api/health',
+      'GET /api/configuracion',
+      'PUT /api/configuracion',
+      'GET /api/devoluciones',
+      'GET /api/devoluciones/:id',
+      'POST /api/devoluciones',
+      'PATCH /api/devoluciones/:id/multa'
+    ]
   });
 });
 
@@ -71,12 +103,7 @@ app.use((error, req, res, next) => {
 
 // Conexión a la base de datos y arranque del servidor
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGODB_URI; // Usar la variable de entorno de Vercel
-
-if (!MONGO_URI) {
-  console.error('FATAL ERROR: MONGODB_URI no está definida.');
-  process.exit(1);
-}
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/biblioteca';
 
 mongoose.connect(MONGO_URI, { 
     useNewUrlParser: true, 
@@ -84,6 +111,8 @@ mongoose.connect(MONGO_URI, {
   })
   .then(() => {
     console.log('✅ Conectado a MongoDB');
+    // Este bloque solo se ejecutará si el archivo es llamado directamente con 'node index.js'
+    // Vercel no lo ejecutará, solo importará 'app'.
     if (require.main === module) {
         app.listen(PORT, () => {
           console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
@@ -92,6 +121,7 @@ mongoose.connect(MONGO_URI, {
   })
   .catch(err => {
     console.error('❌ Error de conexión a MongoDB:', err.message);
+    console.log('💡 Asegúrate de que MongoDB esté ejecutándose');
     process.exit(1);
   });
 
