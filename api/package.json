@@ -1,4 +1,7 @@
-{
+{  
+  "name": "api",
+  "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
@@ -13,4 +16,5 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   }
+  
 }

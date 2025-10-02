@@ -105,31 +105,25 @@ app.use((error, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/biblioteca';
 
-console.log('🔧 Iniciando servidor...');
-console.log('📁 Rutas cargadas:');
-console.log('   - /api/authors');
-console.log('   - /api/users'); 
-console.log('   - /api/libros');
-console.log('   - /api/prestamos');
-console.log('   - /api/auth');
-console.log('   - /api/test');
-console.log('   - /api/health');
-
 mongoose.connect(MONGO_URI, { 
     useNewUrlParser: true, 
     useUnifiedTopology: true
   })
   .then(() => {
     console.log('✅ Conectado a MongoDB');
-    console.log(`📊 Base de datos: ${MONGO_URI}`);
-    app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-      console.log(`🔍 Prueba el estado: http://localhost:${PORT}/api/health`);
-      console.log(`👤 Ruta de registro: http://localhost:${PORT}/api/auth/register`);
-    });
+    // Este bloque solo se ejecutará si el archivo es llamado directamente con 'node index.js'
+    // Vercel no lo ejecutará, solo importará 'app'.
+    if (require.main === module) {
+        app.listen(PORT, () => {
+          console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+        });
+    }
   })
   .catch(err => {
     console.error('❌ Error de conexión a MongoDB:', err.message);
     console.log('💡 Asegúrate de que MongoDB esté ejecutándose');
     process.exit(1);
   });
+
+// Exportar la app para Vercel (esto es crucial)
+module.exports = app;
