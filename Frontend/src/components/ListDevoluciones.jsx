@@ -21,7 +21,7 @@ const ListDevoluciones = () => {
     multaPagada: false
   });
 
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = '/api';
 
   const estadosLibro = [
     { value: 'bueno', label: 'Buen estado' },

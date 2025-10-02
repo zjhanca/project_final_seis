@@ -31,7 +31,7 @@ const ListLibros = () => {
   });
   const [formEditData, setFormEditData] = useState({});
 
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = '/api';
 
   const disponibilidades = [
     { value: 'disponible', label: 'Disponible' },
