@@ -693,11 +693,3 @@ const ListPrestamos = () => {
 };
 
 export default ListPrestamos;
-
-
-  const [formEditData, setFormEditData] = useState({});
-
-  const API_URL = '/api';
-
-  const estados = [
-    { value: 'pendiente', label: 'Pendiente' },
