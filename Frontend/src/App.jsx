@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import PrivateRoute from "./routes/PrivateRoute"; 
+import PrivateRoute from "./routes/PrivateRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -13,7 +13,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Configuracion from './pages/Configuracion';
 
-// Importar componentes consolidados
+// --- RUTAS CORREGIDAS ---
+// Importar componentes de página desde la carpeta 'pages'
 import ListLibros from "./components/ListLibros";
 import ListPrestamos from "./components/ListPrestamos";
 import ListAutores from "./components/ListAutores";
